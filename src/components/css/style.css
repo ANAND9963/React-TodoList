@@ -17,7 +17,7 @@
     text-transform: uppercase;
 }
 
-.input_container {
+.input-container {
     position: relative;
     margin: 0 auto;
 }
@@ -69,7 +69,7 @@
 
 }
 
-.todo_container {
+.todo-container {
     display: flex;
     flex-direction: column;
     width: 40rem;
@@ -81,7 +81,7 @@
 
 }
 
-.footer_txt {
+.footer-txt {
     color: #ffffff;
     font: size 15px;
     position: relative;
@@ -95,7 +95,7 @@
 
 }
 
-.counter_container {
+.counter-container {
     display: flex;
     justify-content: space-between;
     width: 35rem;
@@ -104,7 +104,7 @@
 
 }
 
-.counter_container p {
+.counter-container p {
     align-self: center;
  
 
@@ -120,7 +120,13 @@
 
 
 }
+.list-container{
+    display: flex;
+    align-items: center;
 
+    gap: 1rem;
+
+}
 ul {
     padding: 0;
     margin: 0;
