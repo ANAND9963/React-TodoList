@@ -21,6 +21,9 @@
     position: relative;
     margin: 0 auto;
 }
+.completedTask{
+    text-decoration: line-through;
+}
 
 .txtinput {
     height: 2rem;
@@ -31,8 +34,30 @@
 
 
 
-
 }
+input[type="checkbox"] {
+    appearance: none;
+    cursor: pointer;
+  }
+  
+  input[type="checkbox"]::before {
+    content: "\2713";
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 1px solid var(--grey);
+    border-radius: 50%;
+    text-align: center;
+    font-size: 0.8rem;
+    color: transparent;
+  }
+  
+input[type="checkbox"]:checked:before {
+    color: var(--white);
+    background-color: var(--green);
+    border: 1px solid var(--green);
+    border-radius:50%;
+  }
 
 .btnadd {
     height: 2rem;
