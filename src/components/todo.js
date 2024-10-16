@@ -1,11 +1,22 @@
 import "./css/style.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Todo() {
   const [todoList, setList] = useState(localStorage.getItem("todo")&& Array.isArray(JSON.parse(localStorage.getItem("todo"))) && JSON.parse(localStorage.getItem("todo")).length !==0 ? 
-                                    JSON.parse(localStorage.getItem("todo")):[]);
+                                    JSON.parse(localStorage.getItem("todo")):
+                                  [
+                        
+                                  
+                                    
+                                  ]);
   const [newTodo, setTodo] = useState("");
+  const [editingIndex, setEditingIndex] = useState(null); 
+  const [currentText, setCurrentText] = useState(""); 
   console.log("todoList",todoList);
+
+  useEffect(()=> {
+    localStorage.setItem("todo",JSON.stringify(todoList))
+  },[todoList])
   
   const onKeyAdd = (e) => {
   
@@ -15,19 +26,51 @@ export default function Todo() {
   };
 
   const btnAddTask = () => {
-    let updatedTodoList = [...todoList, newTodo];
+    let updatedTodoList = [...todoList, {text:newTodo,completed:false}];
     setList(updatedTodoList);
-    setStorage(JSON.stringify(updatedTodoList));
+   // setStorage(JSON.stringify(updatedTodoList));
     setTodo(""); 
   };
 
   const dltbtnlist= () => {
     setList([]);
-    setStorage([]);
+   // setStorage([]);
   }
-  const setStorage =(array) =>{
-    localStorage.setItem("todo",array)
+  // const setStorage =(array) =>{
+  //   localStorage.setItem("todo",array)
+  // }
+
+  const toggleChange=  (index) =>{
+    let newList = [...todoList]
+    newList[index]["completed"] = !newList[index]["completed"]
+    setList(newList)   
   }
+  const handleEdit = (index) => {
+    setEditingIndex(index);
+    setCurrentText(todoList[index].text); 
+  };
+
+  const handleEditChange = (e) => {
+    setCurrentText(e.target.value);
+  };
+
+  const handleKeyDownEdit = (e, index) => {
+    if (e.key === "Enter") {
+      let newList = [...todoList];
+      newList[index].text = currentText; 
+      setList(newList);
+      setEditingIndex(null); 
+    }
+  };
+
+  const handleBlur = (index) => {
+    let newList = [...todoList];
+    newList[index].text = currentText; 
+    setList(newList);
+    setEditingIndex(null); 
+  };
+  
+
 
   return (
     <>
@@ -54,11 +97,31 @@ export default function Todo() {
               return (
                 <div key={index} className="list-container">
                   <input
+                    className="checkbox-style"
                     type="checkbox"
                     name={`todoCheckbox-${index}`}
+                    onChange={() => toggleChange(index)}
+                    checked={item.completed}
                     id={`todoCheckbox-${index}`}
                   />
-                  <li id={`todoLi-${index}`} key={index}>{item}</li>
+                  {editingIndex === index ? (
+                    <input
+                      type="text"
+                      value={currentText}
+                      onChange={handleEditChange}
+                      onKeyDown={(e) => handleKeyDownEdit(e, index)}
+                      onBlur={() => handleBlur(index)} 
+                      autoFocus
+                    />
+                  ) : (
+                    <li
+                      onClick={() => handleEdit(index)} 
+                      className={item.completed ? "completedTask" : "none"}
+                      id={`todoLi-${index}`}
+                    >
+                      {item.text}
+                    </li>
+                  )}
                 </div>
               );
             })}
